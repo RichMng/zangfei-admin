@@ -23,16 +23,37 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
+    host: 'localhost',
     port: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api/*': {
+        // target: 'https://m.baomaiduole.com/api',
+        target: 'http://localhost:18391/',//设置你调用的接口域名和端口号 别忘了加http
+        changeOrigin: true,
+        pathRewrite: { '^/api': 'http://localhost:8080/'}},
+      // '/api/*': { target: 'http://bmdl.api.chenzhen.shop/api', pathRewrite: { '^/api': '/'}},
+      // '/bmdl/*': { target: 'http://localhost:18091/', pathRewrite: { '/bmdl': '/'}}
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
-    cssSourceMap: false
+    cssSourceMap: false,
+    errorOverlay: true,
+    notifyOnErrors: false,
+    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
   }
+  // proxyTable: {
+  //   '/api': {  //使用"/api"来代替"http://f.apiplus.c"
+  //     target: 'http://f.apiplus.cn', //源地址
+  //     changeOrigin: true, //改变源
+  //     pathRewrite: {
+  //       '^/api': 'http://f.apiplus.cn' //路径重写
+  //       }
+  //   }
+  // }
 }
