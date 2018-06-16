@@ -16,7 +16,7 @@
     </el-col>
 
     <!--列表-->
-    <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+    <el-table :data="dispatchingOrders" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="index" width="60">
@@ -87,17 +87,6 @@
           <el-input v-model="addForm.mobile" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="addForm.gender" filterable placeholder="选择性别">
-            <el-option
-              v-for="item in genderList"
-              :key="item.attributeId"
-              :label="item.attributeName"
-              :value="item.attributeId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="性别">
           <el-radio-group v-model="addForm.gender">
             <el-radio class="radio" :label="1">男</el-radio>
             <el-radio class="radio" :label="0">女</el-radio>
@@ -145,13 +134,7 @@
 
 <script>
   import util from '../../common/js/util';
-  import User from '../../models/user/user';
-
-  const genderMap = {
-    1: '男' ,
-    2: '女' ,
-    3: '未知'
-  };
+  import DispatchingOrder from '../../models/orders/dispatchingOrder';
 
   export default {
     data() {
@@ -159,12 +142,12 @@
         filters: {
           name: ''
         },
-        users: [],
+        dispatchingOrders: [],
         total: 0,
         page: 1,
         listLoading: false,
         sels: [],//列表选中列
-        genderList: genderList,
+
         editFormVisible: false,//编辑界面是否显示
         editLoading: false,
         showFormVisible: false,
@@ -177,7 +160,7 @@
         editForm: {
           id: 0,
           name: '',
-          gender: '',
+          gender: -1,
           age: 0,
           birthday: '',
           addr: ''
@@ -193,14 +176,14 @@
         //新增界面数据
         addForm: {
           name: '',
-          gender: '',
+          gender: -1,
           age: 0,
           birthday: '',
           addr: ''
         },
         showForm: {
           name: '',
-          gender: '',
+          gender: -1,
           age: 0,
           birthday: '',
           addr: ''
@@ -220,14 +203,17 @@
       //获取用户列表
       getList() {
         let para = {
-          page: 1,
-          name: '',
+          page: this.page,
+          name: this.filters.name
         };
         this.listLoading = true;
         // NProgress.start();
-        User.list(para).then((res) => {
+        DispatchingOrder.list(para).then((res) => {
+          console.info("###########################################################")
+          console.info(res)
+          console.info("###########################################################")
           this.total = res.data.data.total;
-          this.users = res.data.data.resultList;
+          this.dispatchingOrders = res.data.data.resultList;
           this.listLoading = false;
           // NProgress.done();
         }).catch(() => {
@@ -243,7 +229,7 @@
           this.listLoading = true;
           //NProgress.start();
           let para = { id: row.id };
-          removeUser(para).then((res) => {
+          removeDispatchingOrder(para).then((res) => {
             this.listLoading = false;
             //NProgress.done();
             this.$message({
@@ -285,7 +271,7 @@
               //NProgress.start();
               let para = Object.assign({}, this.editForm);
               para.birthday = (!para.birthday || para.birthday == '') ? '' : util.formatDate.format(new Date(para.birthday), 'yyyy-MM-dd');
-              User.update(para).then((res) => {
+              DispatchingOrder.update(para).then((res) => {
                 this.editLoading = false;
                 //NProgress.done();
                 this.$message({
@@ -295,12 +281,6 @@
                 this.$refs['editForm'].resetFields();
                 this.editFormVisible = false;
                 this.getList();
-              }).catch(() => {
-                this.editLoading = false;
-                this.$message({
-                  message: '提交失败',
-                  type: 'error'
-                });
               });
             });
           }
@@ -315,7 +295,7 @@
               //NProgress.start();
               let para = Object.assign({}, this.addForm);
               para.birthday = (!para.birthday || para.birthday == '') ? '' : util.formatDate.format(new Date(para.birthday), 'yyyy-MM-dd');
-              User.create(para).then((res) => {
+              DispatchingOrder.create(para).then((res) => {
                 this.addLoading = false;
                 //NProgress.done();
                 this.$message({
@@ -325,12 +305,6 @@
                 this.$refs['addForm'].resetFields();
                 this.addFormVisible = false;
                 this.getList();
-              }).catch(() => {
-                this.addLoading = false;
-                this.$message({
-                  message: '提交失败',
-                  type: 'error'
-                });
               });
             });
           }
@@ -348,7 +322,7 @@
           this.listLoading = true;
           //NProgress.start();
           let para = { ids: ids };
-          batchRemoveUser(para).then((res) => {
+          batchRemoveDispatchingOrder(para).then((res) => {
             this.listLoading = false;
             //NProgress.done();
             this.$message({
@@ -368,3 +342,7 @@
   }
 
 </script>
+
+<style scoped>
+
+</style>

@@ -10,11 +10,11 @@ class User {
   }
 
   static create(options) {
-    return Common.ajax.post(`api/user/user/save${options}`)
+    return Common.ajax.post('api/user/user/save', options)
   }
 
   static update(options) {
-    return Common.ajax.patch(`api/user/user/update${options}`)
+    return Common.ajax.put('api/user/user/update', options)
   }
 }
 

@@ -4,12 +4,12 @@ import Home from './views/Home.vue';
 import Main from './views/Main.vue';
 import Table from './views/nav1/Table.vue';
 import Form from './views/nav1/Form.vue';
-// import user from './views/nav1/user.vue';
 import Page4 from './views/nav2/Page4.vue';
 import Page5 from './views/nav2/Page5.vue';
 import Page6 from './views/nav3/Page6.vue';
 import echarts from './views/charts/echarts.vue';
-// import fetching from './views/orders/fetchingOrder.vue';
+import fetching from './views/orders/fetchingOrder.vue';
+import dispatching from './views/orders/dispatchingOrder.vue';
 import user from './views/user/user.vue';
 
 
@@ -25,19 +25,24 @@ let routes = [{
         name: '',
         hidden: true
     },
-    // // { path: '/main', component: Main },
-    // {
-    //     path: '/',
-    //     component: Home,
-    //     name: '订单',
-    //     iconCls: 'el-icon-message', //图标样式class
-    //     children: [{
-    //             path: '/fetching',
-    //             component: fetching,
-    //             name: '取货单',
-    //         },
-    //     ]
-    // },
+    // { path: '/main', component: Main },
+    {
+        path: '/',
+        component: Home,
+        name: '订单',
+        iconCls: 'el-icon-message', //图标样式class
+        children: [{
+                path: '/fetching',
+                component: fetching,
+                name: '取货单',
+            },
+            {
+                path: '/dispatching',
+                component: dispatching,
+                name: '送货单',
+            },
+        ]
+    },
     {
         path: '/',
         component: Home,
@@ -46,7 +51,7 @@ let routes = [{
         children: [{
                 path: '/user',
                 component: user,
-                name: '用户',
+                name: '用户列表',
             },
         ]
     },
