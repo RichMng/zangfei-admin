@@ -2,7 +2,7 @@ import Common from '../../config/common'
 
 class FetchingOrder {
   static show(options) {
-    return Common.ajax.get("api/orders/fetchingOrder/" + operions["id"], options)
+    return Common.ajax.get("api/orders/fetchingOrder/" + options["id"])
   }
 
   static list(options) {

@@ -19,17 +19,17 @@
     <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55">
       </el-table-column>
-      <el-table-column type="index" width="60">
+      <el-table-column type="index" width="50">
       </el-table-column>
-      <el-table-column prop="mobile" label="手机" width="200" sortable>
+      <el-table-column prop="name" label="姓名" width="150" sortable>
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="200" sortable>
+      <el-table-column prop="mobile" label="手机" width="150" sortable>
       </el-table-column>
-      <el-table-column prop="gender" label="性别" width="200" :formatter="formatGender" sortable>
+      <el-table-column prop="gender" label="性别" width="90" :formatter="formatGender" sortable>
       </el-table-column>
-      <el-table-column prop="age" label="年龄" width="200" sortable>
+      <el-table-column prop="age" label="年龄" width="90" sortable>
       </el-table-column>
-      <el-table-column prop="birthday" label="生日" width="200" sortable>
+      <el-table-column prop="birthday" label="生日" width="150" sortable>
       </el-table-column>
       <el-table-column prop="createdAtValue" label="创建时间" width="200" sortable>
       </el-table-column>
@@ -87,17 +87,6 @@
           <el-input v-model="addForm.mobile" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="addForm.gender" filterable placeholder="选择性别">
-            <el-option
-              v-for="item in genderList"
-              :key="item.attributeId"
-              :label="item.attributeName"
-              :value="item.attributeId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="性别">
           <el-radio-group v-model="addForm.gender">
             <el-radio class="radio" :label="1">男</el-radio>
             <el-radio class="radio" :label="0">女</el-radio>
@@ -108,6 +97,10 @@
         </el-form-item>
         <el-form-item label="生日">
           <el-date-picker type="date" placeholder="选择日期" v-model="addForm.birthday"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="地址" prop="addr" >
+          <v-region @values="regionChange" class="form-control"></v-region>
+          <el-input v-model="addForm.addr" auto-complete="off" placeholder="请输入门牌号"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -164,7 +157,7 @@
         page: 1,
         listLoading: false,
         sels: [],//列表选中列
-        genderList: genderList,
+        // genderList: genderList,
         editFormVisible: false,//编辑界面是否显示
         editLoading: false,
         showFormVisible: false,
@@ -188,7 +181,13 @@
         addFormRules: {
           name: [
             { required: true, message: '请输入姓名', trigger: 'blur' }
-          ]
+          ],
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: 'blur' }
+          ],
+          addr: [
+            { required: true, message: '请输入地址', trigger: 'blur' }
+          ],
         },
         //新增界面数据
         addForm: {
@@ -360,6 +359,9 @@
         }).catch(() => {
 
         });
+      },
+      regionChange(data){
+        console.log(data);
       }
     },
     mounted() {

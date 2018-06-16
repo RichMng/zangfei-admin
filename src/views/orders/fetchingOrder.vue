@@ -9,9 +9,6 @@
         <el-form-item>
           <el-button type="primary" v-on:click="getList">查询</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleAdd">新增</el-button>
-        </el-form-item>
       </el-form>
     </el-col>
 
@@ -19,32 +16,30 @@
     <el-table :data="fetchingOrders" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55">
       </el-table-column>
-      <el-table-column type="index" width="60">
+      <el-table-column type="index" width="50">
       </el-table-column>
-      <el-table-column prop="mobile" label="手机" width="200" sortable>
+      <el-table-column prop="userBo.name" label="姓名" width="150" sortable>
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="200" sortable>
+      <el-table-column prop="fetchingType" label="类型" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="gender" label="性别" width="200" :formatter="formatGender" sortable>
+      <el-table-column prop="status" label="状态" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="age" label="年龄" width="200" sortable>
+      <el-table-column prop="way" label="取货方式" width="150" sortable>
       </el-table-column>
-      <el-table-column prop="birthday" label="生日" width="200" sortable>
+      <el-table-column prop="customerRemark" label="顾客备注" width="200" sortable>
       </el-table-column>
-      <el-table-column prop="createdAtValue" label="创建时间" width="200" sortable>
+      <el-table-column prop="userBo.createdAtValue" label="创建时间" width="200" sortable>
       </el-table-column>
       <el-table-column label="操作" min-width="200">
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="small" @click="show(scope.$index, scope.row)">查看</el-button>
-          <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!--工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
@@ -77,56 +72,51 @@
       </div>
     </el-dialog>
 
-    <!--新增界面-->
-    <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-      <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="addForm.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="手机" prop="mobile">
-          <el-input v-model="addForm.mobile" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-radio-group v-model="addForm.gender">
-            <el-radio class="radio" :label="1">男</el-radio>
-            <el-radio class="radio" :label="0">女</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="年龄">
-          <el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-        </el-form-item>
-        <el-form-item label="生日">
-          <el-date-picker type="date" placeholder="选择日期" v-model="addForm.birthday"></el-date-picker>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="addFormVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
-      </div>
-    </el-dialog>
-
     <!--show界面-->
     <el-dialog title="" v-model="showFormVisible" :close-on-click-modal="false">
-      <el-form :model="showForm" label-width="80px" ref="showForm">
-        <el-card shadow="hover" class="20px Extra large ">
-            {{showForm.name}} {{showForm.gender}}
-        </el-card>
-        <el-form-item label="性别">
-          <el-radio-group v-model="showForm.gender">
-            <el-radio class="radio" :label="1">男</el-radio>
-            <el-radio class="radio" :label="0">女</el-radio>
-          </el-radio-group>
+      <el-form :model="showForm" label-width="150px" ref="showForm">
+        <el-form-item label="姓名：" prop="name">
+          <span>{{showForm.userBo.name}}</span>
         </el-form-item>
-        <el-form-item label="年龄">
-          <el-input-number v-model="showForm.age" :min="0" :max="200"></el-input-number>
+        <el-form-item label="手机：" prop="mobile">
+          <span>{{showForm.userBo.mobile}}</span>
         </el-form-item>
-        <el-form-item label="生日">
-          <el-date-picker type="date" placeholder="选择日期" v-model="showForm.birthday"></el-date-picker>
+        <el-form-item label="类型：" prop="fetchingType">
+          <span>{{showForm.fetchingType}}</span>
+        </el-form-item>
+        <el-form-item label="状态：" prop="status">
+          <span>{{showForm.status}}</span>
+        </el-form-item>
+        <el-form-item label="取货方式：" prop="way">
+          <span>{{showForm.way}}</span>
+        </el-form-item>
+        <el-form-item label="顾客备注：" prop="customerRemark">
+          <span>{{showForm.customerRemark}}</span>
+        </el-form-item>
+        <el-form-item label="创建时间：" prop="createdAtValue">
+          <span>{{showForm.userBo.createdAtValue}}</span>
+        </el-form-item>
+        <el-form-item label="领取时间：" prop="assignedAtValue">
+          <span>{{showForm.assignedAtValue}}</span>
+        </el-form-item>
+        <el-form-item label="上门人员：" prop="assignedOperator">
+          <span>{{showForm.assignedOperator.name}}</span>
+        </el-form-item>
+        <el-form-item label="出发时间：" prop="departedAtValue">
+          <span>{{showForm.departedAtValue}}</span>
+        </el-form-item>
+        <el-form-item label="领取时间：" prop="receivedAtValue">
+          <span>{{showForm.receivedAtValue}}</span>
+        </el-form-item>
+        <el-form-item label="入库时间：" prop="warehousedAtValue">
+          <span>{{showForm.warehousedAtValue}}</span>
+        </el-form-item>
+        <el-form-item label="入库人员：" prop="warehousedOperator">
+          <span>{{showForm.warehousedOperator.name}}</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="showFormVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
       </div>
     </el-dialog>
   </section>
@@ -165,42 +155,119 @@
           birthday: '',
           addr: ''
         },
-
-        addFormVisible: false,//新增界面是否显示
-        addLoading: false,
-        addFormRules: {
-          name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' }
-          ]
-        },
-        //新增界面数据
-        addForm: {
-          name: '',
-          gender: -1,
-          age: 0,
-          birthday: '',
-          addr: ''
-        },
+        //查看页面数据
         showForm: {
-          name: '',
-          gender: -1,
-          age: 0,
-          birthday: '',
-          addr: ''
-        }
+           assignedAtValue: '2018-06-16 21:22:19',
+           assignedOperator: {
+               name: '小白',
+           },
+           attachmentBoList:[
+                {
+                  attachmentCode:"111",
+                  attachmentNames:"一架飞机",
+                  status:10
+                },
+              ],
+           createdAtValue: '2018-06-16 21:22:19',
+           createdOperator: {
+               name: '小白',
+           },
+           customerRemark: '姜雪是个大傻子',
+           departedAtValue: '2018-06-16 21:22:19',
+           departedOperator: {
+               name: '小白',
+           },
+           fetchingType: '正常单',
+           packageBoList: [
+               {
+                   fetchingOrderId: 1,
+                   id: 1,
+                   packageCode: "43546564",
+                   packagedAt: 1529155339,
+                   packagedAtValue: "2018-06-16 21:22:19",
+                   packagedOperatorId: 1,
+                   status: 10,
+                   userId: 1,
+                   warehousedAt: 1529155339,
+                   warehousedAtValue: "2018-06-16 21:22:19",
+                   warehousedOperatorId: 1
+               },
+               {
+                   fetchingOrderId: 1,
+                   id: 2,
+                   packageCode: "34545464",
+                   packagedAt: 1529155339,
+                   packagedAtValue: "2018-06-16 21:22:19",
+                   packagedOperatorId: 1,
+                   status: 10,
+                   userId: 1,
+                   warehousedAt: 1529155339,
+                   warehousedAtValue: "2018-06-16 21:22:19",
+                   warehousedOperatorId: 1
+               }
+           ],
+           receivedAtValue: '2018-06-16 21:22:19',
+           receivedOperator: {
+               name: '小白',
+           },
+           status: '已创建',
+           userBo: {
+               createdAtValue: '2018-06-16 21:22:19',
+               mobile: '15011234321',
+               name: '白白',
+           },
+           warehousedAtValue: '2018-06-16 21:22:19',
+           warehousedOperator: {
+               name: '小白',
+           },
+           way: 'Zang飞上门取',
+        },
 
+        addLoading: false,
       }
     },
     methods: {
-      //性别显示转换
-      formatGender: function (row, column) {
-        return row.gender == 1 ? '男' : row.gender == 0 ? '女' : '未知';
+      //取货方式显示转换
+      formatWay: function (row) {
+        return row.way == 10 ? 'Zang飞上门取' : row.way == 20 ? '顾客送到店' : '未知';
+      },
+      //取货单类型显示转换
+      formatFetchingType: function (row) {
+        return row.fetchingType == 10 ? '正常单' : row.fetchingType == 20 ? '返工单' : '未知';
+      },
+      //状态显示转换
+      formatStatus: function (row) {
+        let type = '已创建';
+        switch (row.status) {
+          case 10:
+            type = '已创建';
+            break;
+          case 20:
+            type = '已分配';
+            break;
+          case 30:
+            type = '已出发';
+            break;
+          case 40:
+            type = '已接收';
+            break;
+          case 50:
+            type = '部分入库';
+            break;
+          case 51:
+            type = '全部入库';
+            break;
+          default:
+            type = '已创建';
+            break;
+        }
+        return type;
       },
       handleCurrentChange(val) {
         this.page = val;
         this.getList();
       },
-      //获取用户列表
+      //获取取货单列表
       getList() {
         let para = {
           page: this.page,
@@ -209,9 +276,6 @@
         this.listLoading = true;
         // NProgress.start();
         FetchingOrder.list(para).then((res) => {
-          console.info("###########################################################")
-          console.info(res)
-          console.info("###########################################################")
           this.total = res.data.data.total;
           this.fetchingOrders = res.data.data.resultList;
           this.listLoading = false;
@@ -221,46 +285,22 @@
 
         });
       },
-      //删除
-      handleDel: function (index, row) {
-        this.$confirm('确认删除该记录吗?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = { id: row.id };
-          removeFetchingOrder(para).then((res) => {
-            this.listLoading = false;
-            //NProgress.done();
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-            this.getList();
-          });
-        }).catch(() => {
-
-        });
-      },
       //显示编辑界面
       handleEdit: function (index, row) {
         this.editFormVisible = true;
         this.editForm = Object.assign({}, row);
       },
-      //显示新增界面
-      handleAdd: function () {
-        this.addFormVisible = true;
-        this.addForm = {
-          name: '',
-          gender: -1,
-          age: 0,
-          birthday: '',
-          addr: ''
-        };
-      },
       show: function (index, row){
-        this.showFormVisible = true;
-        this.showForm = Object.assign({}, row);
+        FetchingOrder.show(row).then((res) => {
+          console.info("###########################################################")
+          console.info(res)
+          console.info("###########################################################")
+          this.showFormVisible = true;
+          this.showForm = Object.assign({}, res.data.data);
+        }).catch(() => {
+          this.listLoading = false;
+
+        });
       },
       //编辑
       editSubmit: function () {
@@ -286,55 +326,9 @@
           }
         });
       },
-      //新增
-      addSubmit: function () {
-        this.$refs.addForm.validate((valid) => {
-          if (valid) {
-            this.$confirm('确认提交吗？', '提示', {}).then(() => {
-              this.addLoading = true;
-              //NProgress.start();
-              let para = Object.assign({}, this.addForm);
-              para.birthday = (!para.birthday || para.birthday == '') ? '' : util.formatDate.format(new Date(para.birthday), 'yyyy-MM-dd');
-              FetchingOrder.create(para).then((res) => {
-                this.addLoading = false;
-                //NProgress.done();
-                this.$message({
-                  message: '提交成功',
-                  type: 'success'
-                });
-                this.$refs['addForm'].resetFields();
-                this.addFormVisible = false;
-                this.getList();
-              });
-            });
-          }
-        });
-      },
       selsChange: function (sels) {
         this.sels = sels;
       },
-      //批量删除
-      batchRemove: function () {
-        var ids = this.sels.map(item => item.id).toString();
-        this.$confirm('确认删除选中记录吗？', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = { ids: ids };
-          batchRemoveFetchingOrder(para).then((res) => {
-            this.listLoading = false;
-            //NProgress.done();
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-            this.getList();
-          });
-        }).catch(() => {
-
-        });
-      }
     },
     mounted() {
       this.getList();
