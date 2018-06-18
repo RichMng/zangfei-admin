@@ -8,7 +8,6 @@ import Page4 from './views/nav2/Page4.vue';
 import Page5 from './views/nav2/Page5.vue';
 import Page6 from './views/nav3/Page6.vue';
 import echarts from './views/charts/echarts.vue';
-import fetching from './views/orders/fetchingOrder.vue';
 import dispatching from './views/orders/dispatchingOrder.vue';
 import user from './views/user/user.vue';
 
@@ -31,15 +30,43 @@ let routes = [{
         component: Home,
         name: '订单',
         iconCls: 'el-icon-message', //图标样式class
-        children: [{
+        children: [
+            {
                 path: '/fetching',
-                component: fetching,
-                name: '取货单',
+                name: '取货单列表',
+                title: '取货单',
+                meta: { menu: true },
+                component: resolve => { require(['@/views/orders/fetching/fetchingOrder.vue'], resolve); },
+            },
+            {
+              path: 'fetching/new',
+              name: 'fetching_new',
+              title: '新建取货单',
+              meta: { action: 'fetching' },
+              hidden: true,
+              component: resolve => { require(['@/views/orders/fetching/edit.vue'], resolve); }
+            },
+            {
+              path: 'fetching/:id',
+              name: '取货单详情',
+              title: '查看取货单',
+              meta: { action: 'fetching' },
+              hidden: true,
+              component: resolve => { require(['@/views/orders/fetching/show.vue'], resolve); }
+            },
+            {
+              path: 'fetching/:fetchingId/edit',
+              name: 'fetching_edit',
+              title: '编辑取货单',
+              meta: { action: 'fetching' },
+              hidden: true,
+              component: resolve => { require(['@/views/orders/fetching/edit.vue'], resolve); }
             },
             {
                 path: '/dispatching',
                 component: dispatching,
                 name: '送货单',
+                meta: { menu: true },
             },
         ]
     },

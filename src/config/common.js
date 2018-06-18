@@ -6,7 +6,7 @@ let Common = {};
 // };
 
 Common.ajax = axios.create({
-  baseURL: 'http://localhost:18391',
+  baseURL: 'http://192.168.1.108:3000',
   timeout: 30000,
 });
 
