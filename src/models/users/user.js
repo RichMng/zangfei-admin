@@ -2,11 +2,11 @@ import Common from '../../config/common'
 
 class User {
   static show(options) {
-    return Common.ajax.get("api/user/user/" + operions["id"], options)
+    return Common.ajax.get("api/user/user/" + options["id"])
   }
 
   static list(options) {
-    return Common.ajax.get("api/user/user/list", options)
+    return Common.ajax.get("api/user/user/list", { params: options })
   }
 
   static create(options) {

@@ -106,11 +106,11 @@
           </el-table-column>
           <el-table-column prop="packagedAtValue" label="打包时间" width="200" sortable>
           </el-table-column>
-          <el-table-column prop="packagedOperatorId" label="打包人" width="200" sortable>
+          <el-table-column prop="packagedOperator.name" label="打包人" width="200" sortable>
           </el-table-column>
           <el-table-column prop="warehousedAtValue" label="入库时间" width="200" sortable>
           </el-table-column>
-          <el-table-column prop="warehousedOperatorId" label="入库人" min-width="200" sortable>
+          <el-table-column prop="warehousedOperator.name" label="入库人" min-width="200" sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>

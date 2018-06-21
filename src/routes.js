@@ -8,8 +8,6 @@ import Page4 from './views/nav2/Page4.vue';
 import Page5 from './views/nav2/Page5.vue';
 import Page6 from './views/nav3/Page6.vue';
 import echarts from './views/charts/echarts.vue';
-import dispatching from './views/orders/dispatchingOrder.vue';
-import user from './views/user/user.vue';
 
 
 let routes = [{
@@ -36,7 +34,7 @@ let routes = [{
                 name: '取货单列表',
                 title: '取货单',
                 meta: { menu: true },
-                component: resolve => { require(['@/views/orders/fetching/fetchingOrder.vue'], resolve); },
+                component: resolve => { require(['@/views/orders/fetchingOrder/index.vue'], resolve); },
             },
             {
               path: 'fetching/new',
@@ -44,7 +42,7 @@ let routes = [{
               title: '新建取货单',
               meta: { action: 'fetching' },
               hidden: true,
-              component: resolve => { require(['@/views/orders/fetching/edit.vue'], resolve); }
+              component: resolve => { require(['@/views/orders/fetchingOrder/edit.vue'], resolve); }
             },
             {
               path: 'fetching/:id',
@@ -52,7 +50,7 @@ let routes = [{
               title: '查看取货单',
               meta: { action: 'fetching' },
               hidden: true,
-              component: resolve => { require(['@/views/orders/fetching/show.vue'], resolve); }
+              component: resolve => { require(['@/views/orders/fetchingOrder/show.vue'], resolve); }
             },
             {
               path: 'fetching/:fetchingId/edit',
@@ -60,26 +58,46 @@ let routes = [{
               title: '编辑取货单',
               meta: { action: 'fetching' },
               hidden: true,
-              component: resolve => { require(['@/views/orders/fetching/edit.vue'], resolve); }
+              component: resolve => { require(['@/views/orders/fetchingOrder/edit.vue'], resolve); }
             },
             {
-                path: '/dispatching',
-                component: dispatching,
-                name: '送货单',
-                meta: { menu: true },
+              path: '/dispatching',
+              name: '送货单列表',
+              title: '送货单',
+              meta: { action: 'dispatching' },
+              component: resolve => { require(['@/views/orders/dispatchingOrder/index.vue'], resolve); }
             },
+            {
+              path: 'dispatching/:id',
+              name: '送货单详情',
+              title: '查看送货单',
+              meta: { action: 'dispatching' },
+              hidden: true,
+              component: resolve => { require(['@/views/orders/dispatchingOrder/show.vue'], resolve); }
+            }
         ]
     },
     {
         path: '/',
         component: Home,
         name: '用户',
-        iconCls: 'el-icon-message', //图标样式class
-        children: [{
+        iconCls: 'el-icon-message',
+        children: [
+            {
                 path: '/user',
-                component: user,
                 name: '用户列表',
+                title: '用户',
+                meta: { menu: true },
+                component: resolve => { require(['@/views/users/user/index.vue'], resolve); },
             },
+            {
+              path: 'user/:id',
+              name: '用户详情',
+              title: '用户详情',
+              meta: { action: 'user' },
+              hidden: true,
+              component: resolve => { require(['@/views/users/user/show.vue'], resolve); }
+            }
         ]
     },
     {
