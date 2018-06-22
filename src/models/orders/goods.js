@@ -6,7 +6,7 @@ class Goods {
   }
 
   static list(options) {
-    return Common.ajax.get("api/orders/goods/list", options)
+    return Common.ajax.get("api/orders/goods/list", { params: options })
   }
 
   static create(options) {

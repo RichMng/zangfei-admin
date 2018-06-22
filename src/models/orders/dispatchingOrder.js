@@ -6,7 +6,7 @@ class DispatchingOrder {
   }
 
   static list(options) {
-    return Common.ajax.get("api/orders/dispatchingOrder/list", options)
+    return Common.ajax.get("api/orders/dispatchingOrder/list", { params: options })
   }
 
   static create(options) {

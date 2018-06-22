@@ -163,15 +163,7 @@
     data () {
       return {
         goodsList: [],
-        packagesList: [
-           {
-               packageCode: "",
-               packagedAtValue: "",
-               packagedOperatorId: 1,
-               warehousedAtValue: "",
-               warehousedOperatorId: 1
-           }
-        ],
+        packagesList: [],
         fetchingOrdersList: [],
         dispatchingOrdersList: [],
         addressesList: [],
@@ -241,71 +233,73 @@
           if (response.data.code == 200) {
             this.showForm = Object.assign({}, response.data.data);
           } else {
-            this.$Message.error({ content: '请求错误' });
+            this.$message({ message: '请求错误', type: 'error' });
           }
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          this.$message({
+            message: '提交失败',
+            type: 'error'
+          });
         });
       },
 
-      loadGoods (userId) {
+      loadGoods (userId, _this) {
         this.loading = true;
         return Goods.list({ userId: userId }).then((response) => {
           this.loading = false;
           this.goodsList = response.data.data
-
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          this.$message({ message: '请求失败', type: 'error' });
         });
       },
 
-      loadPackages (userId) {
-        this.loading = true;
+      loadPackages (userId, _this) {
+        _this.loading = true;
         return Package.list({ userId: userId }).then((response) => {
-          this.loading = false;
-          console.info(response)
-          this.packagesList = response.data.data
-          console.info(this.packagesList)
+          _this.loading = false;
+          _this.packagesList = response.data.data
+          console.info(_this.packagesList )
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          _this.$message({ message: '请求失败', type: 'error' });
         });
       },
 
-      loadFetchingOrders (userId) {
+      loadFetchingOrders (userId, _this) {
         this.loading = true;
         return FetchingOrder.list({ userId: userId }).then((response) => {
           this.loading = false;
           this.fetchingOrdersList = response.data.data
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          this.$message({ message: '请求失败', type: 'error' });
         });
       },
 
-      loadDispatchingOrders (userId) {
+      loadDispatchingOrders (userId, _this) {
         this.loading = true;
         return DispatchingOrder.list({ userId: userId }).then((response) => {
           this.loading = false;
           this.dispatchingOrdersList = response.data.data
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          this.$message({ message: '请求失败', type: 'error' });
         });
       },
 
-      loadAddresses (userId) {
+      loadAddresses (userId, _this) {
         this.loading = true;
         return Address.list({ userId: userId }).then((response) => {
           this.loading = false;
           this.addressesList = response.data.data
         }).catch(() => {
-          this.$Message.error({ content: '请求失败' });
+          this.$message({ message: '请求失败', type: 'error' });
         });
       },
 
       selsChange: function (sels) {
         this.sels = sels;
       },
+
       handleClick (tab, event) {
-        this.$options.methods[tab.name](this.$route.params.id);
+        this.$options.methods[tab.name](this.$route.params.id, this);
       },
     }
   };

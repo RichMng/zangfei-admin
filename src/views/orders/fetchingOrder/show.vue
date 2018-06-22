@@ -99,7 +99,7 @@
       </el-tab-pane>
       <el-tab-pane label="包裹信息">
         <!--列表-->
-        <el-table :data="showForm.packageBoList" highlight-current-row @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="showForm.packageBoList" height="250" highlight-current-row @selection-change="selsChange" style="width: 100%;">
           <el-table-column type="index" width="50">
           </el-table-column>
           <el-table-column prop="packageCode" label="包裹编码" width="150" sortable>
@@ -149,15 +149,7 @@
                name: '',
            },
            fetchingType: '',
-           packageBoList: [
-               {
-                   packageCode: "",
-                   packagedAtValue: "",
-                   packagedOperatorId: 1,
-                   warehousedAtValue: "",
-                   warehousedOperatorId: 1
-               }
-           ],
+           packageBoList: [],
            receivedAtValue: '',
            receivedOperator: {
                name: '',
