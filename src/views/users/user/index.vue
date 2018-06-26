@@ -27,8 +27,6 @@
       </el-table-column>
       <el-table-column prop="gender" label="性别" width="90" :formatter="formatGender" sortable>
       </el-table-column>
-      <el-table-column prop="age" label="年龄" width="90" sortable>
-      </el-table-column>
       <el-table-column prop="birthday" label="生日" width="150" sortable>
       </el-table-column>
       <el-table-column prop="createdAtValue" label="创建时间" width="200" sortable>
@@ -37,7 +35,7 @@
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="small" @click="show(scope.$index, scope.row)">查看</el-button>
-          <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+          <el-button size="small" @click="createFetchingOrder(scope.$index, scope.row)">新建取货单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,9 +62,6 @@
             <el-radio class="radio" :label="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="年龄">
-          <el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
-        </el-form-item>
         <el-form-item label="生日">
           <el-date-picker type="date" placeholder="选择日期" v-model="editForm.birthday"></el-date-picker>
         </el-form-item>
@@ -92,14 +87,11 @@
             <el-radio class="radio" :label="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="年龄">
-          <el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-        </el-form-item>
         <el-form-item label="生日">
           <el-date-picker type="date" placeholder="选择日期" v-model="addForm.birthday"></el-date-picker>
         </el-form-item>
         <el-form-item label="地址" prop="addr" >
-          <v-region @values="regionChange" class="form-control"></v-region>
+          <v-region :town="true" @values="regionChange" class="form-control"></v-region>
           <el-input v-model="addForm.addr" auto-complete="off" placeholder="请输入门牌号"></el-input>
         </el-form-item>
       </el-form>
@@ -229,27 +221,6 @@
 
         });
       },
-      //删除
-      handleDel: function (index, row) {
-        this.$confirm('确认删除该记录吗?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = { id: row.id };
-          removeUser(para).then((res) => {
-            this.listLoading = false;
-            //NProgress.done();
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-            this.getList();
-          });
-        }).catch(() => {
-
-        });
-      },
       //显示编辑界面
       handleEdit: function (index, row) {
         this.editFormVisible = true;
@@ -271,6 +242,14 @@
             path: '/user/' + row.id,
             params: {
                 id: row.id,
+            }
+        });
+      },
+      createFetchingOrder: function (index, row){
+        this.$router.push({
+            name: "fetching_new",
+            params: {
+                userId: row.id,
             }
         });
       },

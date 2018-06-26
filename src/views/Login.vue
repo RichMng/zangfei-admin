@@ -17,6 +17,7 @@
 
 <script>
   import { requestLogin } from '../api/api';
+  import User from '@/models/users/user';
   //import NProgress from 'nprogress'
   export default {
     data() {

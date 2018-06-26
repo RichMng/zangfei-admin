@@ -42,7 +42,7 @@ let routes = [{
               title: '新建取货单',
               meta: { action: 'fetching' },
               hidden: true,
-              component: resolve => { require(['@/views/orders/fetchingOrder/edit.vue'], resolve); }
+              component: resolve => { require(['@/views/orders/fetchingOrder/new.vue'], resolve); }
             },
             {
               path: 'fetching/:id',

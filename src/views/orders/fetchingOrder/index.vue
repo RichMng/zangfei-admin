@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="200">
         <template scope="scope">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
           <el-button size="small" @click="show(scope.$index, scope.row)">查看</el-button>
         </template>
       </el-table-column>
